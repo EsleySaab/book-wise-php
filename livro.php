@@ -1,6 +1,15 @@
 <?php 
-  require 'dados.php';
+require 'dados.php';
+$id = $_REQUEST['id'];
+
+$filtrado = array_filter($livros, function($l) use($id) {
+  return $l['id'] == $id;
+});
+
+$livro = array_pop($filtrado);
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,17 +37,8 @@
   </header>
 
   <main class="mx-auto max-w-screen-lg space-y-6">
-    <form class="w-full flex space-x-2 mt-6">
-      <input type="text" class="border-stone-800 border-2 rounded-md bg-stone-900 text-sm focus:outline-none px-2 py-1" placeholder="Pesquisar..." name="pesquisar">
-      <button type="submit" class="cursor-pointer bg-stone-700 p-1 rounded-md hover:bg-stone-800">Pesquisar</button>
-    </form>
+   ID do Livro: <?=$livro['titulo']?>
 
-
-    <!-- Lista de Livros -->
-  <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-
-  <!-- Livro -->
-   <?php foreach($livros as $livro): ?>
     <div class="p-2 rounded border-stone-800 border-2 bg-stone-900">
       <div class="flex">
       <div class="w-1/3">Imagem</div>
@@ -50,8 +50,6 @@
     </div>
       <div class="text-sm mt-2"><?=$livro['descricao']?></div>
     </div>
-    <?php endforeach; ?>
-  </section>
   </main>
 </body>
 </html>
