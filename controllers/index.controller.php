@@ -1,8 +1,6 @@
 <?php
 
-// Model
-require 'dados.php';
+$db = new DB();
+$livros = $db->livros();
 
-view('index', [
-  'livros' => $livros
-]);
+view('index', compact('livros'));
