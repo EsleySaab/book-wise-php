@@ -11,18 +11,14 @@ class DB
   }
 
 
-  public function livros()
+  public function livros($pesquisa = null)
   {
 
-    $query = $this->db->query("select * from livros");
+    $prepare = $this->db->prepare("select * from livros where usuario_id = 1 and titulo like :pesquisa");
+    $prepare->bindValue(':pesquisa', "%$pesquisa%");
+    $prepare->execute();
 
-    $items = $query->fetchAll();
-
-    $retorno = [];
-
-    foreach ($items as $item) {
-      $retorno[] = Livro::make($item);
-    }
+    $items = $prepare->fetchAll();
 
     return array_map(fn($item) => Livro::make($item), $items);
   }
@@ -30,11 +26,12 @@ class DB
   public function livro($id)
   {
 
-    $sql = "select * from livros where id = " . $id;
+    $prepare = $this->db->prepare("select * from livros where id = :id");
+    $prepare->bindValue('id', $id);
+    $prepare->execute();
 
-    $query = $this->db->query($sql);
+    $items = $prepare->fetch();
 
-    $items = $query->fetchAll();
 
     return array_map(fn($item) => Livro::make($item), $items)[0];
   }
